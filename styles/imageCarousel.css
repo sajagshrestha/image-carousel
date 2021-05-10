@@ -1,0 +1,24 @@
+.carousel {
+	width: 60%;
+	border: 5px solid red;
+	overflow: hidden;
+}
+
+.carousel-image-container {
+	display: flex;
+}
+
+.carousel-image {
+	max-width: 100%;
+}
+
+button {
+	position: fixed;
+	bottom: 20px;
+}
+#prev {
+	left: 20px;
+}
+#next {
+	left: 150px;
+}

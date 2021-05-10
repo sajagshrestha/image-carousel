@@ -1,7 +1,9 @@
 @import "./reset.css";
-@import "./reset.css";
+@import "./imageCarousel.css";
 
 body {
 	min-height: 100vh;
 	background-color: #1b1b1b;
+	display: grid;
+	place-items: center;
 }
