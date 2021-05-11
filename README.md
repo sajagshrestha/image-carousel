@@ -2,7 +2,7 @@
 ![gif](https://media.giphy.com/media/HDCEr1fqlzoX4UEdC1/giphy.gif)
 
 # How to use.
-<h3>Step 1: Clone The repo.</h3>
+<h3>Step 1: Clone the repo.</h3>
 
 ```console
   git clone https://github.com/sajagshrestha/image-carousel.git
