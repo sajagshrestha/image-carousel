@@ -2,8 +2,8 @@ const carousel = document.querySelector(".carousel");
 const imageContainer = document.querySelector(".carousel-image-container");
 const images = imageContainer.children;
 
+const imageSize = images[0].clientWidth;
 const numberOfImages = images.length;
-const imageSize = carousel.clientWidth;
 
 let posX = 0;
 let counter = 1;
@@ -73,7 +73,7 @@ function slide(current, destination) {
 }
 
 //onClick handlers
-function onNextButtonClick() {
+function onNextButtonClick(imageSize) {
 	if (counter === numberOfImages) {
 		//if last image, slide to first
 		slide(posX, 0);
@@ -89,7 +89,7 @@ function onNextButtonClick() {
 	}
 }
 
-function onPreviousButtonClick() {
+function onPreviousButtonClick(imageSize) {
 	if (counter === 1) {
 		// first image slide to last
 		let destinationPosX = imageSize * (numberOfImages - 1);
@@ -108,7 +108,7 @@ function onPreviousButtonClick() {
 
 //slide when clicking on dots
 for (let i = 0; i < dots.length; i++) {
-	dots[i].addEventListener("click", () => {
+	dots[i].addEventListener("click", (imageSize) => {
 		let destinationPosx = imageSize * i;
 		counter = i + 1;
 		activateCurrentPictureDot(counter);
@@ -121,5 +121,7 @@ for (let i = 0; i < dots.length; i++) {
 activateCurrentPictureDot(counter);
 
 //add onClick handlers to buttons
-nextButton.addEventListener("click", onNextButtonClick);
-previousButton.addEventListener("click", onPreviousButtonClick);
+nextButton.addEventListener("click", () => onNextButtonClick(imageSize));
+previousButton.addEventListener("click", () =>
+	onPreviousButtonClick(imageSize)
+);
