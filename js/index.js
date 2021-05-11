@@ -3,7 +3,7 @@ const imageContainer = document.querySelector(".carousel-image-container");
 const images = imageContainer.children;
 
 const numberOfImages = images.length;
-const imageSize = images[0].clientWidth;
+const imageSize = carousel.clientWidth;
 
 let posX = 0;
 let counter = 1;
