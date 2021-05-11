@@ -75,6 +75,7 @@ function slide(current, destination) {
 //onClick handlers
 function onNextButtonClick() {
 	if (counter === numberOfImages) {
+		//if last image, slide to first
 		slide(posX, 0);
 		posX = 0;
 		counter = 1;
@@ -90,6 +91,7 @@ function onNextButtonClick() {
 
 function onPreviousButtonClick() {
 	if (counter === 1) {
+		// first image slide to last
 		let destinationPosX = imageSize * (numberOfImages - 1);
 		slide(posX, destinationPosX);
 		posX = destinationPosX;
