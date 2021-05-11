@@ -1,9 +1,6 @@
 const carousel = document.querySelector(".carousel");
 const imageContainer = document.querySelector(".carousel-image-container");
-const images = document.querySelectorAll(".carousel-image");
-
-const prevButton = document.getElementById("prev");
-const nextButton = document.getElementById("next");
+const images = imageContainer.children;
 
 const numberOfImages = images.length;
 const imageSize = images[0].clientWidth;
@@ -11,89 +8,115 @@ const imageSize = images[0].clientWidth;
 let posX = 0;
 let counter = 1;
 
-function slideForward(current, destination) {
-	const animate = () => {
-		if (current >= destination) {
-			imageContainer.style.transform = `translateX(-${destination}px)`;
-			return (posX = destination);
-		}
-		current += 60;
-		imageContainer.style.transform = `translateX(-${current}px)`;
+//add indicator to dom
+const indicators = document.createElement("div");
+indicators.classList.add("indicators");
+carousel.appendChild(indicators);
 
-		window.requestAnimationFrame(() => animate());
-	};
-	window.requestAnimationFrame(animate);
+for (let i = 0; i < numberOfImages; i++) {
+	let dot = document.createElement("div");
+	dot.classList.add("dot");
+	indicators.appendChild(dot);
 }
 
-function slideBackward(current, destination) {
-	const animate = () => {
-		if (current <= destination) {
-			imageContainer.style.transform = `translateX(-${destination}px)`;
-			return (posX = destination);
+const dots = indicators.children;
+
+//add buttons to dom
+const previousButton = document.createElement("button");
+previousButton.innerHTML = "&#8249";
+previousButton.classList.add("previous-button");
+carousel.appendChild(previousButton);
+
+const nextButton = document.createElement("button");
+nextButton.innerHTML = "&#8250";
+nextButton.classList.add("next-button");
+carousel.appendChild(nextButton);
+
+//functions
+//change indicator dots color when active
+function activateCurrentPictureDot(current) {
+	for (let i = 0; i < dots.length; i++) {
+		if (current === i + 1) {
+			dots[i].classList.add("active");
+			console.log(i + 1);
+		} else {
+			dots[i].classList.remove("active");
 		}
-		current -= 60;
-		imageContainer.style.transform = `translateX(-${current}px)`;
-		window.requestAnimationFrame(() => animate());
-	};
-	window.requestAnimationFrame(animate);
+	}
 }
 
-const slideNextPicture = () => {
+//slide animation
+function slide(current, destination) {
+	if (current < destination) {
+		const animate = () => {
+			if (current >= destination) {
+				return (imageContainer.style.transform = `translateX(-${destination}px)`);
+			}
+			current += 60;
+			imageContainer.style.transform = `translateX(-${current}px)`;
+
+			window.requestAnimationFrame(() => animate());
+		};
+		window.requestAnimationFrame(animate);
+	}
+	if (current > destination) {
+		const animate = () => {
+			if (current <= destination) {
+				return (imageContainer.style.transform = `translateX(-${destination}px)`);
+			}
+			current -= 60;
+			imageContainer.style.transform = `translateX(-${current}px)`;
+			window.requestAnimationFrame(() => animate());
+		};
+		window.requestAnimationFrame(animate);
+	}
+}
+//onClick handlers
+function onNextButtonClick() {
 	if (counter === numberOfImages) {
-		slideBackward(posX, 0);
+		slide(posX, 0);
 		posX = 0;
 		counter = 1;
+		activateCurrentPictureDot(counter);
 	} else {
 		let destinationPosX = imageSize * counter;
-		slideForward(posX, destinationPosX);
+		slide(posX, destinationPosX);
 		posX = destinationPosX;
 		counter++;
+		activateCurrentPictureDot(counter);
 	}
-};
+}
 
-const slidePreviousPicture = () => {
+function onPreviousButtonClick() {
 	if (counter === 1) {
 		let destinationPosX = imageSize * (numberOfImages - 1);
-		slideForward(posX, destinationPosX);
+		slide(posX, destinationPosX);
 		posX = destinationPosX;
 		counter = numberOfImages;
+		activateCurrentPictureDot(counter);
 	} else {
 		let destinationPosX = imageSize * (counter - 2);
-		slideBackward(posX, destinationPosX);
+		slide(posX, destinationPosX);
 		posX = destinationPosX;
 		counter--;
+		activateCurrentPictureDot(counter);
 	}
-};
-// const slideNextPicture = () => {
-// 	//if we reach last image
-// 	if (counter === numberOfImages) {
-// 		//go to first image
-// 		imageContainer.style.transform = `translateX(${0}px)`;
-// 		counter = 1;
-// 	} else {
-// 		//else move to next image
-// 		imageContainer.style.transform = `translateX(-${
-// 			imageSize * counter
-// 		}px)`;
-// 		counter++;
-// 	}
-// 	console.log(counter);
-// };
+}
 
-// const slidePrevPicture = () => {
-// 	if (counter === 1) {
-// 		imageContainer.style.transform = `translateX(-${
-// 			imageSize * (numberOfImages - 1)
-// 		}px)`;
-// 		counter = numberOfImages;
-// 	} else {
-// 		imageContainer.style.transform = `translateX(-${
-// 			imageSize * (counter - 2)
-// 		}px)`;
-// 		counter--;
-// 	}
-// 	console.log(counter);
-// };
+//slide when clicking on dots
+for (let i = 0; i < dots.length; i++) {
+	dots[i].addEventListener("click", () => {
+		let destinationPosx = imageSize * i;
+		counter = i + 1;
+		activateCurrentPictureDot(counter);
+		slide(posX, destinationPosx);
+		posX = destinationPosx;
+	});
+}
 
-nextButton.addEventListener("click", slideNextPicture);
-prevButton.addEventListener("click", slidePreviousPicture);
+//activate first image
+activateCurrentPictureDot(counter);
+
+//add onClick handlers to buttons
+nextButton.addEventListener("click", onNextButtonClick);
+previousButton.addEventListener("click", onPreviousButtonClick);
