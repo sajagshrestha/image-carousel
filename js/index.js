@@ -71,6 +71,7 @@ function slide(current, destination) {
 		window.requestAnimationFrame(animate);
 	}
 }
+
 //onClick handlers
 function onNextButtonClick() {
 	if (counter === numberOfImages) {
